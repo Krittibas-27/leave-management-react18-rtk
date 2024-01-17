@@ -7,3 +7,23 @@
     border: thin solid rgb(128 128 128 / 30%) !important; z-index: 99;
 }
 .ql-editor { min-height: 80px;}
+.leavewView {width:40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer;}
+.ql-container.ql-snow.ql-disabled {
+    background: #d8dbe0; border-color: #d8dbe0 !important; border-radius: 4px;
+}
+// Datepicker
+.cal_icon{margin-top: 3px;}
+.react-datepicker__view-calendar-icon input {
+    padding: 6px 10px 5px 30px !important;  
+}
+.react-datepicker__close-icon::after {
+    background-color: rgba(224, 87, 87, 0.718) !important;
+    padding: 2px;
+    font-size: 11px!important;
+}
+.react-datepicker-popper {
+    z-index: 9999 !important;
+}
+.react-datepicker-wrapper {
+    width:100%
+}

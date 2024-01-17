@@ -4,7 +4,7 @@ import { ApplyLeaveDetailsAction } from '../actions/ApplyLeaveDetailsAction'
 
 const initialState = {
   isLoading: false,
-  allLeaveDetails: [{}],
+  leaveDetailsList: [],
 }
 const ApplyLeaveDetailsSlice = createSlice({
   name: 'leaveDetailsSlice',
@@ -16,11 +16,11 @@ const ApplyLeaveDetailsSlice = createSlice({
     })
     builder.addCase(ApplyLeaveDetailsAction.fulfilled, (state, actions) => {
       state.isLoading = false
-      state.allLeaveDetails = actions.payload
+      state.leaveDetailsList = actions.payload
     })
     builder.addCase(ApplyLeaveDetailsAction.rejected, (state, actions) => {
       state.isLoading = false
-      state.allLeaveDetails = [{}]
+      state.leaveDetailsList = []
     })
   },
 })

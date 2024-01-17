@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
-/* eslint-disable prettier/prettier */
 import { cilChatBubble, cilLowVision } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import {
@@ -15,11 +14,16 @@ import {
   CModalHeader,
   CModalTitle,
   CRow,
+  CTooltip,
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import SpinnerComponent from 'src/components/SpinnerComponent'
 import { ApplyLeaveDetailsAction } from 'src/reduxtoolkit/actions/ApplyLeaveDetailsAction'
+import { FiEye } from "react-icons/fi";
+import { BsChatDots } from "react-icons/bs";
+import ReactQuill from 'react-quill'
 
 const MyDetails = () => {
   const [query, setQuery] = useState('')
@@ -27,29 +31,29 @@ const MyDetails = () => {
   const StatusCell = ({ rows }) => {
     return (
       <>
-        {rows.status === '1' ? (
-          <CButton size="sm" color="primary">
+        {rows.status === '0' ? (
+          <CButton size="sm" color="primary" className='w-100'>
             Pending
           </CButton>
-        ) : rows.status === '2' ? (
-          <CButton size="sm" color="success">
+        ) : rows.status === '1' ? (
+          <CButton size="sm" color="success" className='w-100'>
             Approved
           </CButton>
+        ) : rows.status === '2' ? (
+          <CButton size="sm" color="danger" className='w-100'>
+            Rejected
+          </CButton>
         ) : rows.status === '3' ? (
-          <CButton size="sm" color="info">
-            Info
+          <CButton size="sm" color="secondary" className='w-100'>
+            On hold
           </CButton>
         ) : rows.status === '4' ? (
-          <CButton size="sm" color="dark">
-            Cancelled
-          </CButton>
-        ) : rows.status === '5' ? (
-          <CButton size="sm" color="warning">
-            Warning
+          <CButton size="sm" color="info" className='w-100'>
+            Modified
           </CButton>
         ) : (
-          <CButton size="sm" color="danger">
-            Rejected
+          <CButton size="sm" color="dark" className='w-100'>
+            Cancelled
           </CButton>
         )}
       </>
@@ -89,13 +93,17 @@ const MyDetails = () => {
         //console.log("row", row)
         return (
           <>
-            <CBadge color="success" shape="rounded-pill">
-              <CIcon icon={cilLowVision} size="xl" />
-            </CBadge>{' '}
+            <CTooltip content="Employee leave application details" placement="top">
+              <CBadge color="success" shape="rounded-pill" className='leavewView'  onClick={() => leaveViewHandeler(row)}>
+                <FiEye  size="22px" />
+              </CBadge>
+            </CTooltip>
             &nbsp;
-            <CBadge color="danger" shape="rounded-pill" onClick={() => viewChatHandeler(row)}>
-              <CIcon icon={cilChatBubble} size="xl" />
-            </CBadge>
+            <CTooltip content="Employee & Manager chat details" placement="top">
+              <CBadge color="danger" shape="rounded-pill"  className='leavewView'>
+                <BsChatDots size="22px" />
+              </CBadge>
+            </CTooltip>
           </>
         )
       },
@@ -107,42 +115,67 @@ const MyDetails = () => {
   ]
 
   const dispatch = useDispatch()
+  const { isLoading } = useSelector((state) => state.leaveDetails)
   const [allLeaveDetails, setAllLeaveDetails] = useState()
   const [filterData, setFilterData] = useState()
   const [viewModal, setViewModal] = useState(false)
   const [viewChat, setViewChat] = useState({})
+  const modules = {
+    "toolbar": false
+  };
 
   const leaveDetailsData = () => {
     dispatch(ApplyLeaveDetailsAction()).then((res) => {
-      //console.log('details=>', res.payload)
-      if(res.type === 'leave/employee-details/fulfilled'){
-        setAllLeaveDetails(res.payload.data)
-        setFilterData(res.payload.data)
+      if (res.type === 'leave/employee-details/fulfilled') {
+        setAllLeaveDetails(res.payload)
+        setFilterData(res.payload)
       }
-      
     })
   }
-  const viewChatHandeler = (data) => {
-    //console.log(data)
+  const leaveViewHandeler = (data) => {
     setViewModal(true)
     setViewChat(data)
   }
+  const statusToName=(emStatus)=>{
+    console.log('emStatus', emStatus)
+    if(emStatus === "0"){
+      return "Pending"
+    }else if(emStatus === "1"){
+      return "Approved"
+    }else if(emStatus === "2"){
+      return "Rejected"
+    }else if(emStatus === "3"){
+      return "On Hold"
+    }else if(emStatus === "4"){
+      return "Modified"
+    }else {
+      return "Cancelled"
+    }
+  }
+  
+  useEffect(() => {
+    leaveDetailsData()
+  }, [])
+
   useEffect(() => {
     const result = allLeaveDetails?.filter((item) => {
       return (
-        item.display_name.toLocaleLowerCase().match(query.toLocaleLowerCase()) ||
-        item.department?.toLocaleLowerCase().match(query.toLocaleLowerCase())
+        item?.display_name?.toLocaleLowerCase().match(query.toLocaleLowerCase()) ||
+        item?.dept_name?.toLocaleLowerCase().match(query.toLocaleLowerCase()) 
       )
     })
     setFilterData(result)
-    leaveDetailsData()
   }, [query])
-console.log(viewChat)
+  //console.log('leaveDetailsList')
   return (
     <>
       <DataTable
+        title="Employee Leave Request List"
+        fixedHeader
         columns={columns}
         data={filterData && filterData}
+        progressPending={isLoading}
+        progressComponent={<SpinnerComponent/>}
         pagination
         responsive
         subHeader
@@ -165,28 +198,28 @@ console.log(viewChat)
       />
 
       <CModal
-        
         visible={viewModal}
         onClose={() => setViewModal(false)}
         aria-labelledby="LiveDemoExampleLabel"
       >
         <CModalHeader onClose={() => setViewModal(false)}>
-          <CModalTitle id="LiveDemoExampleLabel">{viewChat.display_name} chat details</CModalTitle>
+          <CModalTitle id="LiveDemoExampleLabel">View Leave details</CModalTitle>
         </CModalHeader>
         <CModalBody>
+          <h6>[P.M. - {viewChat.display_name}]</h6>
           <CRow>
             <CCol sm className="my-2">
               <CFormInput disabled value={viewChat.display_name} />
             </CCol>
             <CCol sm className="my-2">
-              <CFormInput disabled value={viewChat.dept_name}/>
+              <CFormInput disabled value={viewChat.dept_name} />
             </CCol>
             <CCol sm className="my-2">
-              <CFormInput disabled value={viewChat.status}/>
+              <CFormInput disabled value={statusToName(viewChat.status)} />
             </CCol>
           </CRow>
           <CRow>
-          <CCol sm className="my-2">
+            <CCol sm className="my-2">
               <CFormInput disabled value={viewChat.start_date} />
             </CCol>
             <CCol sm className="my-2">
@@ -194,12 +227,8 @@ console.log(viewChat)
             </CCol>
           </CRow>
           <CRow>
-            
             <CCol sm className="my-2">
-              <CFormTextarea
-                rows={2}
-                disabled value={viewChat.reason}
-              ></CFormTextarea>
+              <ReactQuill modules={modules} value={viewChat.reason} readOnly="true"  />
             </CCol>
           </CRow>
         </CModalBody>

@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
 import ToastMessage from './components/ToastMessage'
 import ForgetPassword from './views/pages/forgetpassword/ForgetPassword'
+import Chatboat from './views/chatboat'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -45,6 +46,7 @@ const App = () => {
   return (
     <>
       <ToastMessage />
+      <Chatboat />
       <BrowserRouter>
         <Suspense fallback={loading}>
           <Routes>

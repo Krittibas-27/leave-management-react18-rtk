@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
+import { CSpinner } from '@coreui/react';
 import React from 'react';
-import { Spinner } from 'react-bootstrap';
 
 const SpinnerComponent = () => {
-  return <div className=' text-center'><Spinner animation="grow" variant="info" /></div>
+  return <div className='text-center'><CSpinner color="primary" /></div>
 }
 
 export default SpinnerComponent
