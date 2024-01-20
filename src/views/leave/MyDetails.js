@@ -24,6 +24,7 @@ import { ApplyLeaveDetailsAction } from 'src/reduxtoolkit/actions/ApplyLeaveDeta
 import { FiEye } from "react-icons/fi";
 import { BsChatDots } from "react-icons/bs";
 import ReactQuill from 'react-quill'
+import Chatboat from '../chatboat'
 
 const MyDetails = () => {
   const [query, setQuery] = useState('')
@@ -100,7 +101,7 @@ const MyDetails = () => {
             </CTooltip>
             &nbsp;
             <CTooltip content="Employee & Manager chat details" placement="top">
-              <CBadge color="danger" shape="rounded-pill"  className='leavewView'>
+              <CBadge color="danger" shape="rounded-pill"  className='leavewView'  onClick={()=>setChatboatShow((prev) => !prev)}>
                 <BsChatDots size="22px" />
               </CBadge>
             </CTooltip>
@@ -123,6 +124,7 @@ const MyDetails = () => {
   const modules = {
     "toolbar": false
   };
+  const [chatboatShow, setChatboatShow] = useState(false)
 
   const leaveDetailsData = () => {
     dispatch(ApplyLeaveDetailsAction()).then((res) => {
@@ -166,9 +168,13 @@ const MyDetails = () => {
     })
     setFilterData(result)
   }, [query])
-  //console.log('leaveDetailsList')
+  console.log(chatboatShow)
   return (
     <>
+    {
+      chatboatShow ? <Chatboat setChatboatShow={setChatboatShow} chatboatShow={chatboatShow} /> : null
+    }
+      
       <DataTable
         title="Employee Leave Request List"
         fixedHeader

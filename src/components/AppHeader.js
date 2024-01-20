@@ -22,7 +22,6 @@ import Avatar from 'react-avatar'
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
-  const storeData = JSON.parse(localStorage.getItem('userData'))
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -68,21 +67,8 @@ const AppHeader = () => {
         </CHeaderNav> */}
 
         <CHeaderNav className="ms-3">
-          <Avatar
-            size="40"
-            round={true}
-            color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue'])}
-            name={storeData && storeData.user_display_name}
-            textSizeRatio={2.5}
-            className="ms-3"
-          >
-            <AppHeaderDropdown />
-          </Avatar>
-        </CHeaderNav>
-
-        {/* <CHeaderNav className="ms-3">
           <AppHeaderDropdown />
-        </CHeaderNav> */}
+        </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
       <CContainer fluid>

@@ -22,7 +22,6 @@ import {
 import moment from 'moment'
 
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { ApplyLeaveValidationReg } from './ApplyLeaveValidationReg'
 
