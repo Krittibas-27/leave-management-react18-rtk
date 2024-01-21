@@ -147,7 +147,7 @@ const ViewProfile = () => {
                 </CRow>
                 <CRow>
                   <CCol sm={6} className='my-2'>
-                    <CFormInput type="text" label="Emergency COntact No" placeholder="45879652" />
+                    <CFormInput type="text" label="Emergency Contact No." placeholder="45879652" />
                   </CCol>
                   <CCol sm={6}  className='my-2'>
                     <CFormLabel>Resume (CV)</CFormLabel><br/>
@@ -156,7 +156,7 @@ const ViewProfile = () => {
                 </CRow>
                 <CRow>
                   <CCol sm={12} className='my-2'>
-                  <CFormLabel>Resume (CV)</CFormLabel><br/>
+                  <CFormLabel>Your Skill</CFormLabel><br/>
                     <Select
                       isMulti
                       options={skillOptions}

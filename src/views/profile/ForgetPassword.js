@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { cilCheckAlt, cilLockLocked, cilUser, cilX } from '@coreui/icons'
+import { cilLockLocked} from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CButton, CCard, CCardBody, CCardGroup, CCardHeader, CCol, CForm, CFormInput, CInputGroup, CInputGroupText, CRow } from '@coreui/react'
 import React, { useState } from 'react'
