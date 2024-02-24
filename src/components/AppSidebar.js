@@ -32,7 +32,9 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CLink href="/"><CImage align="start" src={leave_logo} height={70} /></CLink>
+        <CLink href="/">
+          <CImage align="start" src={leave_logo} height={70} />
+        </CLink>
         {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
       </CSidebarBrand>
