@@ -15,4 +15,9 @@ export const forgetPass = createAsyncThunk("employee/forgetpass", async({forgetP
   const res = await leaveBaseUrl.post('/wp-jwt/v1/forgot-password', forgetPassDataa)
   return res.data
 })
+export const getEmpRole = createAsyncThunk("employee/get-role", async()=>{
+  const res = await leaveBaseUrl.get('/wp-jwt/v1/get-user-role')
+  console.log('role', res.data.data)
+  return res.data.data
+})
 

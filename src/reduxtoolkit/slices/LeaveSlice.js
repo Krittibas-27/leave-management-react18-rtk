@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { createSlice } from '@reduxjs/toolkit'
-import { empLogin, forgetPass, rigisterManagement } from '../actions/LeaveMaganeAction'
+import { empLogin, forgetPass, getEmpRole, rigisterManagement } from '../actions/LeaveMaganeAction'
 
 const initialState = {
   isLoading: false,
@@ -8,6 +8,7 @@ const initialState = {
   rigisterList: {},
   loginUser: {},
   message: '',
+  userRole: {},
 }
 const leaveManagemwntSlice = createSlice({
   name: 'managementSlice',
@@ -56,6 +57,18 @@ const leaveManagemwntSlice = createSlice({
       state.isLoading = false
       state.isError = true
       state.message = 'Somting went wrong'
+    })
+    //get role
+    builder.addCase(getEmpRole.pending, (state, actions) => {
+      state.isLoading = true
+    })
+    builder.addCase(getEmpRole.fulfilled, (state, actions) => {
+      state.isLoading = false
+      state.userRole = actions.payload
+    })
+    builder.addCase(getEmpRole.rejected, (state, actions) => {
+      state.isLoading = false
+      state.userRole = {}
     })
   },
 })

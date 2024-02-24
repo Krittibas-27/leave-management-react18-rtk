@@ -11,7 +11,6 @@ import {
   CFormInput,
   CFormLabel,
   CImage,
-  CLink,
   CRow,
 } from '@coreui/react'
 import { cilCloudDownload } from '@coreui/icons'

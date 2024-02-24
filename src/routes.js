@@ -51,6 +51,7 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const ApplyLeave = React.lazy(() => import('./views/leave/ApplyLeave'))
 const MyDetails = React.lazy(() => import('./views/leave/MyDetails'))
+const EmployeeLeave = React.lazy(() => import('./views/leave/EmployeeLeave'))
 const ViewEmployeeProfile = React.lazy(() => import('./views/profile/ViewProfile'))
 const UserForgetPassword = React.lazy(() => import('./views/profile/ForgetPassword'))
 
@@ -101,6 +102,7 @@ const routes = [
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/leave-application/apply', name: 'Apply Leave', element: ApplyLeave },
   { path: '/leave-application/details', name: 'My Details', element: MyDetails },
+  { path: '/leave-application/employee-leave', name: 'Employee Leave', element: EmployeeLeave },
   { path: '/user/profile', name: 'User Profile', element: ViewEmployeeProfile },
   { path: '/user/forget-password', name: 'Forget Password', element: UserForgetPassword },
 ]

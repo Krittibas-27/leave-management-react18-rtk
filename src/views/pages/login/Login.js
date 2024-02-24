@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -17,10 +18,11 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser, cilX, cilCheckAlt } from '@coreui/icons'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { empLogin } from 'src/reduxtoolkit/actions/LeaveMaganeAction'
+import { empLogin, getEmpRole } from 'src/reduxtoolkit/actions/LeaveMaganeAction'
 
 const Login = () => {
-  const { isLoading } = useSelector((state) => state.leaveRedcer)
+  const navigate = useNavigate()
+  const { isLoading, userRole } = useSelector((state) => state.leaveRedcer)
   const dispatch = useDispatch()
   const [userLogin, setUserLogin] = useState({
     userName: '',
@@ -28,9 +30,26 @@ const Login = () => {
   })
   const [errMsg, setErrMsg] = useState('')
   const [showPass, setShowPass] = useState(false)
+  const [empRole, setEmpRole] = useState({})
   const clickHandler = () => {
     setShowPass((prev) => !prev)
   }
+  const getUserRole = () => {
+    dispatch(getEmpRole()).then((res)=>{
+      if (res.type === 'employee/get-role/fulfilled') {
+        const roledata = JSON.stringify(res.payload)
+        localStorage.setItem('emRole', roledata)
+
+      } 
+    })
+    if(userRole){
+      if(userRole.user_role !== ''){
+        console.log('userRole1=>', userRole)
+        window.location.href('/dasboard')
+      }
+    }
+  }
+
 
   const loginSubmit = (e) => {
     if (!userLogin.userName || !userLogin.userPass) {
@@ -39,32 +58,33 @@ const Login = () => {
       })
       setErrMsg('Please fill all fields!')
     } else {
+      
       const newDate = {
         username: userLogin.userName,
         password: userLogin.userPass,
       }
       dispatch(empLogin({ loginData: newDate })).then((res) => {
-        console.log(res)
         if (res.type === 'employee/login/rejected') {
-          console.log('rejected')
           toast.error('Employee dose not exits!', {
             position: toast.POSITION.TOP_RIGHT,
           })
         }
         if (res.type === 'employee/login/fulfilled') {
-          console.log('fulfilled')
+          getUserRole()
           toast.success('Employee login successful', {
             position: toast.POSITION.TOP_RIGHT,
           })
-          const loginUserData = JSON.stringify(res.payload)
-          localStorage.setItem('userData', loginUserData)
-          window.location.reload()
+            const loginUserData = JSON.stringify(res.payload)
+            //console.log('loginUserData=>', loginUserData)
+            localStorage.setItem('userData', loginUserData)
+            
         }
       })
       setErrMsg('')
-      //console.log('newDate=>', newDate)
     }
   }
+  console.log('userRole=>', userRole)
+  
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

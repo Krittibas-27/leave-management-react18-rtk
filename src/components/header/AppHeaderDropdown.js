@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import {
   CAvatar,
@@ -25,7 +26,11 @@ import CIcon from '@coreui/icons-react'
 import Avatar from 'react-avatar'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
-
+const LogoutHandel=()=>{
+  localStorage.removeItem('userData')
+  localStorage.removeItem('emRole')
+  window.location.reload()
+}
 const AppHeaderDropdown = () => {
   const storeData = JSON.parse(localStorage.getItem('userData'))
   return (
@@ -48,7 +53,7 @@ const AppHeaderDropdown = () => {
           Profile
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem href="#" onClick={()=>LogoutHandel()}>
           <CIcon icon={cilPowerStandby} className="me-2" />
           Logout
         </CDropdownItem>

@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import { cilChatBubble, cilLowVision } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { GoPencil } from "react-icons/go";
 import {
   CBadge,
   CButton,
@@ -20,7 +21,7 @@ import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { useDispatch, useSelector } from 'react-redux'
 import SpinnerComponent from 'src/components/SpinnerComponent'
-import { ApplyLeaveDetailsAction, GetChatComment, PostChatComment } from 'src/reduxtoolkit/actions/ApplyLeaveDetailsAction'
+import { AppliedLeaveDetails, ApplyLeaveDetailsAction, GetChatComment, PostChatComment } from 'src/reduxtoolkit/actions/ApplyLeaveDetailsAction'
 import { FiEye } from "react-icons/fi";
 import { BsChatDots } from "react-icons/bs";
 import ReactQuill from 'react-quill'
@@ -29,7 +30,7 @@ import { IoClose } from 'react-icons/io5'
 import { IoIosSend } from 'react-icons/io'
 import moment from 'moment'
 
-const MyDetails = () => {
+const EmployeeLeave = () => {
   const [query, setQuery] = useState('')
   const [chatboatShow, setChatboatShow] = useState(false)
   const [chatText, setChatText] = useState('')
@@ -106,6 +107,12 @@ const MyDetails = () => {
               </CBadge>
             </CTooltip>
             &nbsp;
+            <CTooltip content="Employee leave edit" placement="top">
+              <CBadge color="primary" shape="rounded-pill"  className='leavewView' onClick={()=>chatboatHandeler(row)}>
+                <GoPencil size="22px" />
+              </CBadge>
+            </CTooltip>
+            &nbsp;
             <CTooltip content="Employee & Manager chat details" placement="top">
               <CBadge color="danger" shape="rounded-pill"  className='leavewView' onClick={()=>chatboatHandeler(row)}>
                 <BsChatDots size="22px" />
@@ -117,8 +124,16 @@ const MyDetails = () => {
     },
     {
       name: 'Action',
-      cell: (rows) => <CFormSwitch id="formSwitchCheckDefault" />,
+      cell: (rows) => {
+        return (
+            <>
+            <CFormSwitch id="formSwitchCheckDefault" />&nbsp;
+            <CFormSwitch id="formSwitchCheckDefault" />
+            </>
+        )
+      },
     },
+    
   ]
  
   const dispatch = useDispatch()
@@ -132,9 +147,10 @@ const MyDetails = () => {
     "toolbar": false
   };
   
-  const leaveDetailsData = () => {
-    dispatch(ApplyLeaveDetailsAction()).then((res) => {
-      if (res.type === 'leave/employee-details/fulfilled') {
+  const appliedLeaveDetails = () => {
+    dispatch(AppliedLeaveDetails()).then((res) => {
+      if (res.type === 'applied-leave/details/fulfilled') {
+        console.log(res.payload)
         setAllLeaveDetails(res.payload)
         setFilterData(res.payload)
       }
@@ -181,7 +197,7 @@ const MyDetails = () => {
   }
   
   useEffect(() => {
-    leaveDetailsData()
+    appliedLeaveDetails()
   }, [])
 
   useEffect(() => {
@@ -324,4 +340,4 @@ const MyDetails = () => {
   )
 }
 
-export default MyDetails
+export default EmployeeLeave
