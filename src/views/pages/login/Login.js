@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { empLogin, getEmpRole } from 'src/reduxtoolkit/actions/LeaveMaganeAction'
 
 const Login = () => {
-  const navigate = useNavigate()
   const { isLoading, userRole } = useSelector((state) => state.leaveRedcer)
   const dispatch = useDispatch()
   const [userLogin, setUserLogin] = useState({
@@ -30,26 +29,21 @@ const Login = () => {
   })
   const [errMsg, setErrMsg] = useState('')
   const [showPass, setShowPass] = useState(false)
-  const [empRole, setEmpRole] = useState({})
   const clickHandler = () => {
     setShowPass((prev) => !prev)
   }
   const getUserRole = () => {
-    dispatch(getEmpRole()).then((res)=>{
+    dispatch(getEmpRole()).then((res) => {
       if (res.type === 'employee/get-role/fulfilled') {
         const roledata = JSON.stringify(res.payload)
         localStorage.setItem('emRole', roledata)
 
-      } 
-    })
-    if(userRole){
-      if(userRole.user_role !== ''){
-        console.log('userRole1=>', userRole)
-        window.location.href('/dasboard')
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000)
       }
-    }
+    })
   }
-
 
   const loginSubmit = (e) => {
     if (!userLogin.userName || !userLogin.userPass) {
@@ -58,7 +52,6 @@ const Login = () => {
       })
       setErrMsg('Please fill all fields!')
     } else {
-      
       const newDate = {
         username: userLogin.userName,
         password: userLogin.userPass,
@@ -70,21 +63,19 @@ const Login = () => {
           })
         }
         if (res.type === 'employee/login/fulfilled') {
-          getUserRole()
           toast.success('Employee login successful', {
             position: toast.POSITION.TOP_RIGHT,
           })
-            const loginUserData = JSON.stringify(res.payload)
-            //console.log('loginUserData=>', loginUserData)
-            localStorage.setItem('userData', loginUserData)
-            
+          const loginUserData = JSON.stringify(res.payload)
+          localStorage.setItem('userData', loginUserData)
+          getUserRole()
         }
       })
       setErrMsg('')
     }
   }
   console.log('userRole=>', userRole)
-  
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
